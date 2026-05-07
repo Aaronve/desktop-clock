@@ -1,0 +1,13 @@
+# PyInstaller
+build/
+dist/
+*.spec
+DesktopClock.exe
+
+# Python
+__pycache__/
+*.py[cod]
+
+# IDE
+.idea/
+.vscode/
