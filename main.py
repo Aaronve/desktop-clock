@@ -43,6 +43,9 @@ class DesktopClock:
         # ---- 界面元素 ----
         self._build_ui()
 
+        # ---- 状态 ----
+        self._on_top = True  # 当前是否置顶
+
         # ---- 拖拽相关 ----
         self._drag_x = 0
         self._drag_y = 0
@@ -71,10 +74,19 @@ class DesktopClock:
         self.lbl_date.pack(padx=24, pady=(0, 14))
 
     def _build_context_menu(self):
-        """右键弹出菜单：仅包含「退出」。"""
+        """右键弹出菜单：切换置顶、退出。"""
         self._menu = tk.Menu(self.root, tearoff=0)
+        self._menu.add_command(label="取消置顶", command=self._toggle_topmost)
+        self._menu.add_separator()
         self._menu.add_command(label="退出", command=self._exit)
         self.root.bind("<Button-3>", self._show_menu)
+
+    def _toggle_topmost(self):
+        """切换窗口置顶状态，并更新菜单标签。"""
+        self._on_top = not self._on_top
+        self.root.attributes("-topmost", self._on_top)
+        label = "取消置顶" if self._on_top else "置顶显示"
+        self._menu.entryconfig(0, label=label)
 
     def _snap_to_corner(self):
         """将窗口置于屏幕右下角，距底边和右边各 WIN_MARGIN 像素。"""
